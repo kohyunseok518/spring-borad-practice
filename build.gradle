@@ -27,9 +27,21 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
+    // 스프링 프레임워크 리이브러리 세팅
     implementation group: 'org.springframework', name: 'spring-core', version: '5.3.16'
     implementation group: 'org.springframework', name: 'spring-context', version: '5.3.16'
     implementation group: 'org.springframework', name: 'spring-test', version: '5.3.16'
+
+    //Log4js 라이브러리 세팅
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.16.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.16.0'
+    implementation group: 'jstl', name: 'jstl', version: '1.2'
 }
 
 test {
