@@ -11,4 +11,23 @@
 <!--    컴포넌트를 스킨하는 설정-->
     <context:component-scan base-package="com.org.spring_board_project" />
 
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/webdb"></property>
+        <property name="username" value="webuser"></property>
+        <property name="password" value="webuser"></property>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+          destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
+
 </beans>

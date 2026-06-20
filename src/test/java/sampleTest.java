@@ -4,8 +4,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
@@ -15,9 +19,20 @@ public class sampleTest {
     @Autowired
     private SampleService sampleService;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Test
     public void testService() {
         log.info(sampleService);
         Assertions.assertNotNull(sampleService);
+    }
+
+    @Test
+    public void testConnection() throws Exception {
+        Connection connection = dataSource.getConnection();
+        log.info(connection);
+        Assertions.assertNotNull(connection);
+        connection.close();
     }
 }
