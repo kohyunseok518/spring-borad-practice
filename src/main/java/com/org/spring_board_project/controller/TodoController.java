@@ -51,6 +51,15 @@ public class TodoController {
 
         log.info(todoDTO);
 
+        // 🚀 확인용 로그 추가!
+        log.info("--- 들어온 데이터 확인 ---");
+        log.info("Title: " + todoDTO.getTitle());
+        if(todoDTO.getFiles() != null) {
+            log.info("파일 개수: " + todoDTO.getFiles().size());
+        } else {
+            log.info("파일 리스트가 null입니다!");
+        }
+
         todoService.register(todoDTO);
 
         return "redirect:/todo/list";

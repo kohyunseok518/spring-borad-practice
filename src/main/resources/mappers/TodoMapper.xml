@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.org.spring_board_project.mapper.TodoMapper">
 
-    <resultMap id="attachmentMap" type="com.org.spring_board_project.domain.TodoAttachmentVO">
+    <resultMap id="attachmentMap" type="com.org.spring_board_project.domain.TodoAttachmentVO" autoMapping="false">
         <id column="ano" property="ano"/>
         <result column="tno" property="tno"/>
         <result column="filename" property="filename"/>
@@ -14,7 +14,7 @@
         <result column="reg_date" property="regDate"/>
     </resultMap>
     
-    <resultMap id="todoMap" type="com.org.spring_board_project.domain.TodoAttachmentVO">
+    <resultMap id="todoMap" type="com.org.spring_board_project.domain.TodoVO" autoMapping="false">
         <id column="tno" property="tno"/>
         <result column="title" property="title"/>
         <result column="dueDate" property="dueDate"/>
@@ -30,11 +30,6 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="tno">
         insert into tbl_todo(title, dueDate, writer) values ( #{title}, #{dueDate}, #{writer})
-    </insert>
-
-    <insert id="insertAttachment">
-        insert int tbl_todo_attachment (filename, path, content_type, size, tno)
-        values (#{filename}, #{path}, #{contentType}, #{size}, #{tno})
     </insert>
 
     <insert id="insertAttachment">
