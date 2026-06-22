@@ -4,12 +4,46 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.org.spring_board_project.mapper.TodoMapper">
 
+    <resultMap id="attachmentMap" type="com.org.spring_board_project.domain.TodoAttachmentVO">
+        <id column="ano" property="ano"/>
+        <result column="tno" property="tno"/>
+        <result column="filename" property="filename"/>
+        <result column="path" property="path"/>
+        <result column="content_type" property="contentType"/>
+        <result column="size" property="size"/>
+        <result column="reg_date" property="regDate"/>
+    </resultMap>
+    
+    <resultMap id="todoMap" type="com.org.spring_board_project.domain.TodoAttachmentVO">
+        <id column="tno" property="tno"/>
+        <result column="title" property="title"/>
+        <result column="dueDate" property="dueDate"/>
+        <result column="writer" property="writer"/>
+        <result column="finished" property="finished"/>
+
+        <collection property="attaches" resultMap="attachmentMap"/>
+    </resultMap>
+
     <select id="getTime" resultType="string">
         select now()
     </select>
 
-    <select id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="tno">
         insert into tbl_todo(title, dueDate, writer) values ( #{title}, #{dueDate}, #{writer})
+    </insert>
+
+    <insert id="insertAttachment">
+        insert int tbl_todo_attachment (filename, path, content_type, size, tno)
+        values (#{filename}, #{path}, #{contentType}, #{size}, #{tno})
+    </insert>
+
+    <insert id="insertAttachment">
+        insert into tbl_todo_attachment (filename, path, content_type, size, tno)
+        values (#{filename}, #{path}, #{contentType}, #{size}, #{tno})
+    </insert>
+
+    <select id="getAttachment" resultType="com.org.spring_board_project.domain.TodoAttachmentVO">
+        select ano, tno, filename, path from tbl_todo_attachment where ano = #{ano}
     </select>
 
     <select id="selectAll"
@@ -17,9 +51,15 @@
         select * from tbl_todo order by tno asc;
     </select>
 
-    <select id="selectOne"
-            resultType="com.org.spring_board_project.domain.TodoVO">
-        select * from tbl_todo where tno = #{tno}
+    <select id="selectOne" resultMap="todoMap">
+        SELECT
+            t.tno, t.title, t.dueDate, t.writer, t.finished,
+            a.ano, a.filename, a.path, a.content_type, a.size, a.reg_date
+        FROM tbl_todo t
+        LEFT OUTER JOIN tbl_todo_attachment a
+            ON t.tno = a.tno
+        WHERE t.tno = #{tno}
+        ORDER BY a.ano ASC
     </select>
 
     <delete id="delete">

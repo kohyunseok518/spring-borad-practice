@@ -9,9 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -90,5 +88,16 @@ public class TodoController {
         todoService.modify(todoDTO);
 
         return "redirect:/todo/list";
+    }
+
+    @GetMapping("/download/{ano}")
+    @ResponseBody
+    public void download(@PathVariable("ano") Long ano, javax.servlet.http.HttpServletResponse response) throws Exception {
+        com.org.spring_board_project.domain.TodoAttachmentVO attach = todoService.getAttachment(ano);
+        if (attach == null) {
+            response.sendError(javax.servlet.http.HttpServletResponse.SC_NOT_FOUND); return;
+        }
+        java.io.File file = new java.io.File(attach.getPath());
+        com.org.spring_board_project.util.UploadFiles.download(response, file, attach.getFilename());
     }
 }

@@ -40,9 +40,10 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        Featured
+                        Todo Read
                     </div>
                     <div class="card-body">
+
                         <div class="input-group mb-3">
                             <span class="input-group-text">TNO</span>
                             <input type="text" name="tno" class="form-control" value='<c:out value="${dto.tno}"/>' readonly>
@@ -65,11 +66,34 @@
                         </div>
 
                         <div class="my-4">
+                            <h5>첨부파일</h5>
+                            <c:choose>
+                                <c:when test="${empty dto.attaches}">
+                                    <div class="text-muted border p-3 bg-light rounded">첨부파일이 없습니다.</div>
+                                </c:when>
+                                <c:otherwise>
+                                    <ul class="list-group mb-3">
+                                        <c:forEach var="file" items="${dto.attaches}">
+                                            <c:if test="${not empty file.ano}">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <a href="/todo/download/${file.ano}" class="text-decoration-none fw-bold">
+                                                        📁 ${file.filename}
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <div class="my-4">
                             <div class="float-end">
                                 <button type="button" class="btn btn-primary btn-modify">Modify</button>
                                 <button type="button" class="btn btn-secondary btn-list">List</button>
                             </div>
                         </div>
+
                         <script>
                             // 1. Modify 버튼 클릭 시 동작
                             document.querySelector(".btn-modify").addEventListener("click", function(e) {
