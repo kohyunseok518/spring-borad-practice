@@ -1,5 +1,6 @@
 package com.org.spring_board_project.controller;
 
+import com.org.spring_board_project.dto.PageRequestDTO;
 import com.org.spring_board_project.dto.TodoDTO;
 import com.org.spring_board_project.service.TodoService;
 import com.org.spring_board_project.service.TodoServiceImpl;
@@ -24,9 +25,13 @@ public class TodoController {
     private final TodoService todoService;
 
     @RequestMapping("/list")
-    public void list(Model model) {
-        log.info("todo list.......");
-        model.addAttribute("dtoList",todoService.getAll());
+    public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model) {
+        log.info(pageRequestDTO);
+
+        if(bindingResult.hasErrors()) {
+            pageRequestDTO = pageRequestDTO.builder().build();
+        }
+        model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
     }
 
     @GetMapping("/register")

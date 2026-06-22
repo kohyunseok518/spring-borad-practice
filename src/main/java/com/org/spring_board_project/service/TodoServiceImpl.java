@@ -1,6 +1,8 @@
 package com.org.spring_board_project.service;
 
 import com.org.spring_board_project.domain.TodoVO;
+import com.org.spring_board_project.dto.PageRequestDTO;
+import com.org.spring_board_project.dto.PageResponseDTO;
 import com.org.spring_board_project.dto.TodoDTO;
 import com.org.spring_board_project.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +35,23 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<TodoDTO> getAll() {
+    public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
 
-        List<TodoDTO> dtoList = todoMapper.selectAll().stream()
+        List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+        List<TodoDTO> dtoList = voList.stream()
                 .map(vo -> modelMapper.map(vo, TodoDTO.class))
                 .collect(Collectors.toList());
 
-        return dtoList;
+        int total = todoMapper.getCount(pageRequestDTO);
+
+        PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+
+
+        return pageResponseDTO;
     }
 
     @Override
